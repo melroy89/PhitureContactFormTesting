@@ -14,6 +14,12 @@ from googleapiclient.errors import HttpError
 import time
 import os.path
 
+# Command to install the Google client library for Python:
+# pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+# The first time you run the sample, it prompts you to authorize access:
+# If you're not already signed in to your Google Account, you're prompted to sign in. If you're signed in to multiple
+# accounts, select one account to use for authorization. Click Accept.
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -27,11 +33,10 @@ print("useragent: " + userAgent)
 print()
 opt.add_argument(f'user-agent={userAgent}')
 
-
 # Options to test on different platforms and window size
-driver = webdriver.Chrome(options=opt)                                    #for Chrome browser
+driver = webdriver.Chrome(options=opt)  # for Chrome browser
 # driver = webdriver.Firefox(options=opt)                                   #for Firefox browser
-driver.set_window_size(360, 640)                                          #for mobile version of Chrome or Firefox
+driver.set_window_size(360, 640)  # for mobile version of Chrome or Firefox
 
 # Check if we use mobile version or not
 if driver.get_window_size().get("height") != 640:
@@ -158,7 +163,7 @@ def main():
         print()
         if size == 1:
             print("You have 1 message:")
-        else:
+        elif size > 1:
             print(f"You have {size} messages:")
 
         # print messages on a separate lines
