@@ -14,118 +14,116 @@ from googleapiclient.errors import HttpError
 import time
 import os.path
 
-# Command to install the Google client library for Python:
-# pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
-
-# The first time you run the sample, it prompts you to authorize access:
-# If you're not already signed in to your Google Account, you're prompted to sign in. If you're signed in to multiple
-# accounts, select one account to use for authorization. Click Accept.
-
-# If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-# User-agent random generator
 opt = Options()
 ua = UserAgent()
 userAgent = ua.random
 print()
 print("useragent: " + userAgent)
-print()
 opt.add_argument(f'user-agent={userAgent}')
 
+
 # Options to test on different platforms and window size
-driver = webdriver.Chrome(options=opt)  # for Chrome browser
+driver = webdriver.Chrome(options=opt)                                    # for Chrome browser
 # driver = webdriver.Firefox(options=opt)                                   #for Firefox browser
-driver.set_window_size(360, 640)  # for mobile version of Chrome or Firefox
+# driver.set_window_size(360, 640)                                          # for mobile version of Chrome or Firefox
 
-# Check if we use mobile version or not
-if driver.get_window_size().get("height") != 640:
-    driver.maximize_window()
 
-# Go to phiture.com website
-driver.get("https://phiture.com/work-together/")
+def findAndFillOutAllTextFields():
+    # Check if we use mobile version or not
+    if driver.get_window_size().get("height") != 640:
+        driver.maximize_window()
 
-# Allow cookies
-WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.XPATH, '//a[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
-allowAll = driver.find_element(By.XPATH, '//a[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
-allowAll.click()
+    # Go to phiture.com website
+    driver.get("https://phiture.com/work-together/")
 
-# Refresh is required because after accepting all cookies webdriver can not see main page correctly
-driver.refresh()
+    # Allow cookies
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//a[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
+    allowAll = driver.find_element(By.XPATH, '//a[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
+    allowAll.click()
 
-# We found all parameters on the page
-firstName = driver.find_element(By.NAME, "your-firstname")
-lastName = driver.find_element(By.NAME, "your-lastname")
-company = driver.find_element(By.NAME, "your-company")
-email = driver.find_element(By.NAME, "your-email")
-budget = driver.find_element(By.NAME, "your-budget")
-website = driver.find_element(By.NAME, "your-website")
+    # Refresh is required because after accepting all cookies webdriver can not see main page correctly
+    driver.refresh()
 
-elementsIn = [firstName, lastName, company, email, budget, website]
+    # We found all parameters on the page
+    firstName = driver.find_element(By.NAME, "your-firstname")
+    lastName = driver.find_element(By.NAME, "your-lastname")
+    company = driver.find_element(By.NAME, "your-company")
+    email = driver.find_element(By.NAME, "your-email")
+    budget = driver.find_element(By.NAME, "your-budget")
+    website = driver.find_element(By.NAME, "your-website")
 
-# We filled all parameters on the page
-firstName.send_keys("-")
-lastName.send_keys("-")
-company.send_keys("-")
-email.send_keys("-@gmail.com")
-budget.send_keys("-")
-website.send_keys("-")
+    elementsIn = [firstName, lastName, company, email, budget, website]
 
-# Checking if all text fields are filled
-for e in elementsIn:
-    if e.get_attribute("value") == "":
-        print(f"{e.get_attribute('name')} field is not filled")
+    # We filled all parameters on the page
+    firstName.send_keys("-")
+    lastName.send_keys("-")
+    company.send_keys("-")
+    email.send_keys("-@gmail.com")
+    budget.send_keys("-")
+    website.send_keys("-")
 
-# We found all checkboxes on the page under description area
-mobileGrowthStoriesNewsletterCheckbox = driver.find_element(By.XPATH, '//input[@value="Mobile Growth Stories Newsletter"]')
-checkHereCheckbox = driver.find_element(By.XPATH, '//input[@name="accept-this-1"]')
-asoMonthlyNewslettersCheckbox = driver.find_element(By.XPATH, '//input[@value="ASO Monthly Newsletter"]')
+    # Checking if all text fields are filled
+    for e in elementsIn:
+        if e.get_attribute("value") == "":
+            print(f"{e.get_attribute('name')} field is not filled")
 
-# scroll 250 pixels down (for mobile version)
-if driver.get_window_size().get("height") <= 640:
-    driver.execute_script("window.scrollBy(0,250)")
 
-# We found all checkboxes on the page above description area
-serviceCheckboxes = driver.find_elements(By.XPATH, "//span[starts-with(@class,'wpcf7-list-item')]//input[@name='service[]']")
-appStoreOptimizationCheckbox = driver.find_element(By.XPATH, '//input[@value="App Store Optimization"]')
-appStoreOptimizationCheckbox.click()
-appStoreOptimizationCheckbox.is_enabled()
+def findAndClickCheckboxes():
+    # We found all checkboxes on the page under description area
+    mobileGrowthStoriesNewsletterCheckbox = driver.find_element(By.XPATH,
+                                                                '//input[@value="Mobile Growth Stories Newsletter"]')
+    checkHereCheckbox = driver.find_element(By.XPATH, '//input[@name="accept-this-1"]')
+    asoMonthlyNewslettersCheckbox = driver.find_element(By.XPATH, '//input[@value="ASO Monthly Newsletter"]')
 
-for checkbox in serviceCheckboxes:
-    checkbox.click()
-    checkbox.is_enabled()
+    # scroll 250 pixels down (for mobile version)
+    if driver.get_window_size().get("height") <= 640:
+        driver.execute_script("window.scrollBy(0,250)")
+    # We found all checkboxes on the page above description area
+    serviceCheckboxes = driver.find_elements(By.XPATH,
+                                             "//span[starts-with(@class,'wpcf7-list-item')]//input[@name='service[]']")
+    appStoreOptimizationCheckbox = driver.find_element(By.XPATH, '//input[@value="App Store Optimization"]')
+    appStoreOptimizationCheckbox.click()
+    appStoreOptimizationCheckbox.is_enabled()
 
-# scroll 600 pixels down (for mobile version)
-if driver.get_window_size().get("height") <= 640:
-    driver.execute_script("window.scrollBy(0,600)")
+    for checkbox in serviceCheckboxes:
+        checkbox.click()
+        checkbox.is_enabled()
 
-# We clicked all checkboxes on the page and checked are they enabled
-mobileGrowthStoriesNewsletterCheckbox.click()
-mobileGrowthStoriesNewsletterCheckbox.is_enabled()
-checkHereCheckbox.click()
-checkHereCheckbox.is_enabled()
-asoMonthlyNewslettersCheckbox.click()
-asoMonthlyNewslettersCheckbox.is_enabled()
+    # scroll 600 pixels down (for mobile version)
+    if driver.get_window_size().get("height") <= 640:
+        driver.execute_script("window.scrollBy(0,600)")
 
-# We filled description form
-descriptionArea = driver.find_element(By.XPATH, "//span[@class='wpcf7-form-control-wrap']/textarea")
-descriptionArea.send_keys("Autogenerated message. Please do not reply to this email!")
+    # We clicked all checkboxes on the page and checked are they enabled
+    mobileGrowthStoriesNewsletterCheckbox.click()
+    mobileGrowthStoriesNewsletterCheckbox.is_enabled()
+    checkHereCheckbox.click()
+    checkHereCheckbox.is_enabled()
+    asoMonthlyNewslettersCheckbox.click()
+    asoMonthlyNewslettersCheckbox.is_enabled()
 
-# Click the button "Lets connect" to send contact form message
-letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
-letsConnectButton.click()
 
-# If we got an error, we terminate the script and close the driver
-if driver.find_element(By.XPATH, '//div[contains(@class, "response-output")]').is_displayed():
-    print("Failed to send your message. Please try later or contact the administrator by another method.")
-    print("It happens because of we are using selenium and recaptcha security system always can detect it.")
-    print("That's why we have to use random user-agent generator.")
-    driver.close()
-    quit()
+def fillOutDescriptionTestArea():
+    # We filled description form
+    descriptionArea = driver.find_element(By.XPATH, "//span[@class='wpcf7-form-control-wrap']/textarea")
+    descriptionArea.send_keys("Autogenerated message. Please do not reply to this email!")
 
-# Waiting some time because messages arrive late
-time.sleep(3)
+    # Click the button "Lets connect" to send contact form message
+    letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
+    letsConnectButton.click()
+
+    # If we got an error, we terminate the script and close the driver
+    if driver.find_element(By.XPATH, '//div[contains(@class, "response-output")]').is_displayed():
+        print("Failed to send your message. Please try later or contact the administrator by another method.")
+        print("It happens because of we are using selenium and recaptcha security system always can detect it.")
+        print("That's why we have to use random user-agent generator.")
+        driver.close()
+        quit()
+
+    # Waiting some time because messages arrive late
+    time.sleep(6)
 
 
 # Getting messages from email using GMAIL API
@@ -167,30 +165,38 @@ def main():
         size = len(messages)
         print()
         if size == 1:
-            print("You have 1 message:")
+            print("You have 1 new message: ")
         elif size > 1:
-            print(f"You have {size} messages:")
+            print(f"You have {size} new messages:")
 
         # print messages on a separate lines
         print()
-        print(*messages, sep="\n")
+        for m in messages:
+            print("Message short description: ", end=' ')
+            print(m)
         print()
 
-        # Function to change message status from UNREAD to READ after each test
+        # Function to print and then change message status from UNREAD to READ after each test
         for message in messages:
             msg = service.users().messages().get(userId='me', id=message['id']).execute()
+            print("Message full description: ", end=' ')
             print(msg)
-            # mark the message as read (optional)
-            service.users().messages().modify(userId='me', id=message['id'],
+        print()
+
+        for ms in messages:
+            service.users().messages().modify(userId='me', id=ms['id'],
                                               body={'removeLabelIds': ['UNREAD']}).execute()
-            print("The message has been marked from the status UNREAD to READ")
+            print(f"The message number {ms['id']} has been marked from the status UNREAD to READ")
 
     except HttpError as error:
         print(f'An error occurred: {error}')
 
 
-# Calling the main method
+# Calling all methods
 if __name__ == '__main__':
+    findAndFillOutAllTextFields()
+    findAndClickCheckboxes()
+    fillOutDescriptionTestArea()
     main()
 
 # We need to close browser
