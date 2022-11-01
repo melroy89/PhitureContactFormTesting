@@ -1,8 +1,10 @@
 from __future__ import print_function
+from pyvirtualdisplay import Display
+
+from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
 from google.auth.transport.requests import Request
@@ -14,6 +16,10 @@ from googleapiclient.errors import HttpError
 import time
 import os.path
 
+# disp=Display(size=(1920, 1080))
+# disp = Display()
+# disp.start()
+
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
 opt = Options()
@@ -21,13 +27,10 @@ ua = UserAgent()
 userAgent = ua.random
 print()
 print("useragent: " + userAgent)
+opt.add_argument("--no-sandbox")
+opt.add_argument("--disable-dev-shm-usage")
 opt.add_argument(f'user-agent={userAgent}')
-
-
-# Options to test on different platforms and window size
-driver = webdriver.Chrome(options=opt)                                    # for Chrome browser
-# driver = webdriver.Firefox(options=opt)                                   #for Firefox browser
-# driver.set_window_size(360, 640)                                          # for mobile version of Chrome or Firefox
+driver = webdriver.Chrome(options=opt)
 
 
 def findAndFillOutAllTextFields():
@@ -112,7 +115,7 @@ def fillOutDescriptionTestArea():
 
     # Click the button "Lets connect" to send contact form message
     letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
-    letsConnectButton.click()
+    # letsConnectButton.click()
 
     # If we got an error, we terminate the script and close the driver
     if driver.find_element(By.XPATH, '//div[contains(@class, "response-output")]').is_displayed():
@@ -160,6 +163,7 @@ def main():
 
         if not messages:
             print("You do not have new messages")
+            driver.close()
 
         # print the number of received messages
         size = len(messages)
@@ -190,6 +194,10 @@ def main():
 
     except HttpError as error:
         print(f'An error occurred: {error}')
+    # We need to male a screenshot and close the browser
+    driver.save_screenshot("screenshot.png")
+    driver.close()
+    # disp.stop()
 
 
 # Calling all methods
@@ -198,6 +206,3 @@ if __name__ == '__main__':
     findAndClickCheckboxes()
     fillOutDescriptionTestArea()
     main()
-
-# We need to close browser
-driver.close()

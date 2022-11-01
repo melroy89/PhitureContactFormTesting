@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:  
+    phiture_selenium_docker:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes:
+          - .:/code
+        working_dir:
+          /code
+        command: python3 main.py
