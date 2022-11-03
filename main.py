@@ -17,9 +17,9 @@ import random
 import time
 import os.path
 
-# disp=Display(size=(1920, 1080))
-# disp = Display()
-# disp.start()
+disp=Display(size=(1920, 1080))
+disp = Display()
+disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
@@ -128,7 +128,6 @@ def fillOutDescriptionTestArea():
         driver.close()
 
     # If we got an error, we terminate the script and close the driver
-    # if driver.find_element(By.XPATH, '//div[contains(@class, "response-output")]').is_displayed():
     if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
         print("Failed to send your message. Please try later or contact the administrator by another method.")
         print("It happens because of we are using selenium and recaptcha security system always can detect it.")
@@ -204,10 +203,6 @@ def main():
                 .execute()
             print("Message full description: ", end=' ')
             fullDesc = msg.get("snippet")
-            # email = msg.get("headers")
-            # msg_headers = msg['payload']['headers']
-            # msg_from = filter(lambda hdr: hdr['name'] == 'To', msg_headers)
-            # msg_from = list(msg_from)[0]
             print(fullDesc)
             # For every received email we send a message to a slack channel "phiture-site-automated-tests"
             send_positive_message_to_slack_channel(
@@ -227,9 +222,9 @@ def main():
         print(f'An error occurred: {error}')
 
     # We need to male a screenshot and close the browser
-    # driver.save_screenshot("screenshot.png")
+    driver.save_screenshot("screenshot.png")
     driver.close()
-    # disp.stop()
+    disp.stop()
 
 
 # Calling all methods
