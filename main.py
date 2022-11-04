@@ -144,19 +144,19 @@ def fillOutDescriptionTestArea():
 #         driver.close()
 
     # If we got an error, we terminate the script and close the driver
-    if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
-        print("Failed to send your message. Please try later or contact the administrator by another method.")
-        print("It happens because of we are using selenium and recaptcha security system always can detect it.")
-        print("That's why we have to use random user-agent generator.")
-        send_negative_message_to_slack_channel(
-            "https://hooks.slack.com/services/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",
-            "Failed to send your message. Please try later or contact the administrator by another method.",
-            "Testing website contact form\n",
-            "Automated Phiture website contact form test failed"
-            "#c70404",
-        )
-        driver.close()
-        quit()
+#     if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
+#         print("Failed to send your message. Please try later or contact the administrator by another method.")
+#         print("It happens because of we are using selenium and recaptcha security system always can detect it.")
+#         print("That's why we have to use random user-agent generator.")
+#         send_negative_message_to_slack_channel(
+#             "https://hooks.slack.com/services/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",
+#             "Failed to send your message. Please try later or contact the administrator by another method.",
+#             "Testing website contact form\n",
+#             "Automated Phiture website contact form test failed"
+#             "#c70404",
+#         )
+#         driver.close()
+#         quit()
 
     # Waiting some time because messages arrive late
     time.sleep(2)
