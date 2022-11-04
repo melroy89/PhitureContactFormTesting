@@ -24,21 +24,16 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-for i in range(7):
-    try:
-        opt = Options()
-        ua = UserAgent()
-        userAgent = ua.random
-        print()
-        print("useragent: " + userAgent)
-        opt.add_argument("--no-sandbox")
-        opt.add_argument("--disable-dev-shm-usage")
-        opt.add_argument(f'user-agent={userAgent}')
-        driver = webdriver.Chrome(options=opt)
-    except Exception as e:
-        print(str(e))
-        time.sleep(2)
-    break
+
+opt = Options()
+ua = UserAgent()
+userAgent = ua.random
+print()
+print("useragent: " + userAgent)
+opt.add_argument("--no-sandbox")
+opt.add_argument("--disable-dev-shm-usage")
+opt.add_argument(f'user-agent={userAgent}')
+driver = webdriver.Chrome(options=opt)
 
 hex_number = random.randint(1118481, 16777215)
 hex_number = str(hex(hex_number))
@@ -52,13 +47,17 @@ def findAndFillOutAllTextFields():
 
     # Go to phiture.com website
     driver.get("https://phiture.com/work-together/")
-
+    # wait for page to load
+    time.sleep(5)
+    
     # Allow cookies
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
-    allowAll = driver.find_element(By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
-    allowAll.click()
-
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
+        allowAll = driver.find_element(By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
+        allowAll.click()
+    except Exception as e:
+        print(str(e))
     # Refresh is required because after accepting all cookies webdriver can not see main page correctly
     driver.refresh()
 
