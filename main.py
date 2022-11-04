@@ -24,15 +24,20 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-opt = Options()
-ua = UserAgent()
-userAgent = ua.random
-print()
-print("useragent: " + userAgent)
-opt.add_argument("--no-sandbox")
-opt.add_argument("--disable-dev-shm-usage")
-opt.add_argument(f'user-agent={userAgent}')
-driver = webdriver.Chrome(options=opt)
+for i in range(4):
+    try:
+        opt = Options()
+        ua = UserAgent()
+        userAgent = ua.random
+        print()
+        print("useragent: " + userAgent)
+        opt.add_argument("--no-sandbox")
+        opt.add_argument("--disable-dev-shm-usage")
+        opt.add_argument(f'user-agent={userAgent}')
+        driver = webdriver.Chrome(options=opt)
+    except Exception as e:
+        print(str(e))
+        break
 
 hex_number = random.randint(1118481, 16777215)
 hex_number = str(hex(hex_number))
@@ -152,9 +157,12 @@ def main():
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
     """
-    if os.environ.get("GMAIL_CREDS", False):
+    creds = os.environ.get("GMAIL_CREDS", False)
+    if creds:
         with open("credentials.json", "w") as f:
             f.write(os.environ["GMAIL_CREDS"])
+    else:
+        print("GMAIL_CREDS is not set", creds)
        
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
