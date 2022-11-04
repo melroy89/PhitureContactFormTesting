@@ -164,6 +164,7 @@ def main():
             f.write(os.environ["GMAIL_CREDS"])
     else:
         print("GMAIL_CREDS is not set", creds)
+        print(os.environ)
        
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
