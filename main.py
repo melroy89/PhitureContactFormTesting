@@ -15,6 +15,7 @@ from slack import send_positive_message_to_slack_channel, send_negative_message_
 
 import random
 import time
+import os
 import os.path
 
 disp=Display(size=(1920, 1080))
@@ -151,6 +152,10 @@ def main():
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
     """
+    if os.environ.get("GMAIL_CREDS", False):
+        with open("credentials.json", "w") as f:
+            f.write(os.environ["GMAIL_CREDS"])
+       
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
