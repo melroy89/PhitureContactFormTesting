@@ -24,7 +24,7 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-for i in range(4):
+for i in range(7):
     try:
         opt = Options()
         ua = UserAgent()
@@ -37,7 +37,8 @@ for i in range(4):
         driver = webdriver.Chrome(options=opt)
     except Exception as e:
         print(str(e))
-        break
+        time.sleep(2)
+    break
 
 hex_number = random.randint(1118481, 16777215)
 hex_number = str(hex(hex_number))
