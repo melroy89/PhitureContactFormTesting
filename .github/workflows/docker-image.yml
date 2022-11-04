@@ -1,7 +1,4 @@
 name: Docker Image CI
-env:
-    GMAIL_CREDS : ${{secrets.GMAIL_CREDS}}
-
 on: 
   schedule:
     - cron: "1 * * * *"
@@ -13,9 +10,9 @@ on:
 jobs:
 
   build:
-
+    env:
+        GMAIL_CREDS : ${{secrets.GMAIL_CREDS}}
     runs-on: ubuntu-latest
-
     steps:
     - uses: docker/build-push-action@v2
       with:
