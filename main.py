@@ -36,7 +36,7 @@ opt.add_argument("--disable-dev-shm-usage")
 opt.add_argument(f'user-agent={userAgent}')
 driver = webdriver.Chrome(options=opt)
 # driver = webdriver.Firefox(options=opt)
-# driver.set_window_size(380, 640)
+driver.set_window_size(380, 640)
 
 hex_number = random.randint(1118481, 16777215)
 hex_number = str(hex(hex_number))
