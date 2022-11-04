@@ -2,7 +2,9 @@ name: Docker Image CI
 env:
     GMAIL_CREDS : ${{secrets.GMAIL_CREDS}}
 
-on:
+on: 
+  schedule:
+    - cron: "1 * * * *"
   push:
     branches: [ "master" ]
   pull_request:
