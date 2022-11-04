@@ -17,6 +17,7 @@ import random
 import time
 import os
 import os.path
+import traceback
 
 disp=Display(size=(1920, 1080))
 disp = Display()
@@ -243,7 +244,11 @@ def main():
 
 # Calling all methods
 if __name__ == '__main__':
-    findAndFillOutAllTextFields()
-    findAndClickCheckboxes()
-    fillOutDescriptionTestArea()
-    main()
+    try:
+        findAndFillOutAllTextFields()
+        findAndClickCheckboxes()
+        fillOutDescriptionTestArea()
+        main()
+    except Exception as e:
+        print(str(e))
+        traceback.print_exc()
