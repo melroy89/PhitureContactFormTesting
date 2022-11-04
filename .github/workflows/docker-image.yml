@@ -1,4 +1,6 @@
 name: Docker Image CI
+env:
+    GMAIL_CREDS : ${{secrets.GMAIL_CREDS}}
 
 on:
   push:
