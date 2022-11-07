@@ -19,9 +19,9 @@ import os
 import os.path
 import traceback
 
-disp=Display(size=(1920, 1080))
-disp = Display()
-disp.start()
+# disp=Display(size=(1920, 1080))
+# disp = Display()
+# disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
@@ -248,7 +248,7 @@ def main():
     # We need to male a screenshot and close the browser
     driver.save_screenshot("screenshot.png")
     driver.close()
-    disp.stop()
+    # disp.stop()
 
 
 # Calling all methods
