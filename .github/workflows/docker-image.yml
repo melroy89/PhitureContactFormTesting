@@ -1,7 +1,8 @@
 name: Docker Image Build and Run CI
-on: 
+on:
+  # run twice per day
   schedule:
-    - cron: "1 * * * *"
+    - cron: "1 0,12 * * *"
   push:
     branches: [ "master" ]
   pull_request:
@@ -11,6 +12,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    # stop running the action if it takes more than 15 minutes
+    timeout-minutes: 15
     steps:
     - uses: docker/login-action@v2
       with:
