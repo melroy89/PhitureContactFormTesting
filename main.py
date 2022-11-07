@@ -136,27 +136,27 @@ def fillOutDescriptionTestArea():
     letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
     time.sleep(4)
     letsConnectButton.click()
-    time.sleep(8)
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "successfully")]')))
-        if not driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed():
-            print("Button was not clicked. Rerun this test again.")
-            driver.close()
+#     time.sleep(8)
+#         WebDriverWait(driver, 10).until(
+#             EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "successfully")]')))
+#         if not driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed():
+#             print("Button was not clicked. Rerun this test again.")
+#             driver.close()
 
-    # If we got an error, we terminate the script and close the driver
-    if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
-        print("Failed to send your message. Please try later or contact the administrator by another method.")
-        print("It happens because of we are using selenium and recaptcha security system always can detect it.")
-        print("That's why we have to use random user-agent generator.")
-        send_negative_message_to_slack_channel(
-            "https://hooks.slack.com/services/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",
-            "Failed to send your message. Please try later or contact the administrator by another method.",
-            "Testing website contact form\n",
-            "Automated Phiture website contact form test failed"
-            "#c70404",
-        )
-        driver.close()
-        quit()
+#     # If we got an error, we terminate the script and close the driver
+#     if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
+#         print("Failed to send your message. Please try later or contact the administrator by another method.")
+#         print("It happens because of we are using selenium and recaptcha security system always can detect it.")
+#         print("That's why we have to use random user-agent generator.")
+#         send_negative_message_to_slack_channel(
+#             "https://hooks.slack.com/services/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",
+#             "Failed to send your message. Please try later or contact the administrator by another method.",
+#             "Testing website contact form\n",
+#             "Automated Phiture website contact form test failed"
+#             "#c70404",
+#         )
+#         driver.close()
+#         quit()
 
     # Waiting some time because messages arrive late
     time.sleep(2)
