@@ -19,9 +19,9 @@ import os
 import os.path
 import traceback
 
-# disp=Display(size=(1920, 1080))
-# disp = Display()
-# disp.start()
+disp=Display(size=(1920, 1080))
+disp = Display()
+disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
@@ -137,11 +137,11 @@ def fillOutDescriptionTestArea():
     time.sleep(4)
     letsConnectButton.click()
     time.sleep(8)
-    #     WebDriverWait(driver, 10).until(
-    #         EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "successfully")]')))
-    #     if not driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed():
-    #         print("Button was not clicked. Rerun this test again.")
-    #         driver.close()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "successfully")]')))
+        if not driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed():
+            print("Button was not clicked. Rerun this test again.")
+            driver.close()
 
     # If we got an error, we terminate the script and close the driver
     if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
@@ -248,7 +248,7 @@ def main():
     # We need to male a screenshot and close the browser
     driver.save_screenshot("screenshot.png")
     driver.close()
-    # disp.stop()
+    disp.stop()
 
 
 # Calling all methods
