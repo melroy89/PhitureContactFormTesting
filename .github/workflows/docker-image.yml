@@ -9,21 +9,23 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     # stop running the action if it takes more than 15 minutes
     timeout-minutes: 15
     steps:
-    - uses: docker/login-action@v2
+    - 
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: docker/build-push-action@v3
+    - 
+      uses: docker/build-push-action@v3
       with:
         push: true
         tags: phiture/phiture_site_tests:latest
-    - uses: addnab/docker-run-action@v2
+    - 
+      uses: addnab/docker-run-action@v3
       with:
         image: phiture/phiture_site_tests:latest
-        run: python main.py
+        run: python3 main.py
