@@ -101,9 +101,9 @@ def findAndClickCheckboxes():
     # We found all checkboxes on the page above description area
     serviceCheckboxes = driver.find_elements(By.XPATH,
                                              "//span[starts-with(@class,'wpcf7-list-item')]//input[@name='service[]']")
-    appStoreOptimizationCheckbox = driver.find_element(By.XPATH, '//input[@value="App Store Optimization"]')
-    appStoreOptimizationCheckbox.click()
-    appStoreOptimizationCheckbox.is_enabled()
+#     appStoreOptimizationCheckbox = driver.find_element(By.XPATH, '//input[@value="App Store Optimization"]')
+#     appStoreOptimizationCheckbox.click()
+#     appStoreOptimizationCheckbox.is_enabled()
 
     for checkbox in serviceCheckboxes:
         checkbox.click()
