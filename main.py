@@ -39,8 +39,8 @@ chromeOpt.add_argument(f'user-agent={userAgent}')
 firefoxOpt.add_argument("--no-sandbox")
 firefoxOpt.add_argument("--disable-dev-shm-usage")
 firefoxOpt.add_argument(f'user-agent={userAgent}')
-driver = webdriver.Chrome(options=chromeOpt)
-# driver = webdriver.Firefox(options=firefoxOpt)
+# driver = webdriver.Chrome(options=chromeOpt)
+driver = webdriver.Firefox(options=firefoxOpt)
 # driver.set_window_size(380, 640)
 
 
