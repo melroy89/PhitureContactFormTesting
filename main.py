@@ -1,6 +1,7 @@
 from __future__ import print_function
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -13,18 +14,16 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from slack import send_positive_message_to_slack_channel, send_negative_message_to_slack_channel
 
-import random
 import time
 import os
 import os.path
 import traceback
 
-disp=Display(size=(1920, 1080))
+disp = Display(size=(1920, 1080))
 disp = Display()
 disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
-
 
 opt = Options()
 ua = UserAgent()
@@ -38,10 +37,6 @@ driver = webdriver.Chrome(options=opt)
 # driver = webdriver.Firefox(options=opt)
 # driver.set_window_size(380, 640)
 
-hex_number = random.randint(1118481, 16777215)
-hex_number = str(hex(hex_number))
-hex_number = '#' + hex_number[2:]
-
 
 def findAndFillOutAllTextFields():
     # Check if we use mobile version or not
@@ -51,13 +46,15 @@ def findAndFillOutAllTextFields():
     # Go to phiture.com website
     driver.get("https://phiture.com/work-together/")
     # wait for page to load
-    time.sleep(5)
-    
+    time.sleep(3)
+
     # Allow cookies
     try:
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
-        allowAll = driver.find_element(By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
+            EC.presence_of_element_located(
+                (By.XPATH, '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')))
+        allowAll = driver.find_element(By.XPATH,
+                                       '//button[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
         allowAll.click()
     except Exception as e:
         print(str(e))
@@ -92,22 +89,29 @@ def findAndClickCheckboxes():
     # We found all checkboxes on the page under description area
     mobileGrowthStoriesNewsletterCheckbox = driver.find_element(By.XPATH,
                                                                 '//input[@value="Mobile Growth Stories Newsletter"]')
-    checkHereCheckbox = driver.find_element(By.XPATH, '//input[@name="accept-this-1"]')
+    privacyPolicyCheckbox = driver.find_element(By.XPATH, '//input[@name="accept-this-1"]')
     asoMonthlyNewslettersCheckbox = driver.find_element(By.XPATH, '//input[@value="ASO Monthly Newsletter"]')
 
     # scroll 250 pixels down (for mobile version)
     if driver.get_window_size().get("height") <= 640:
         driver.execute_script("window.scrollBy(0,250)")
+
     # We found all checkboxes on the page above description area
     serviceCheckboxes = driver.find_elements(By.XPATH,
                                              "//span[starts-with(@class,'wpcf7-list-item')]//input[@name='service[]']")
     appStoreOptimizationCheckbox = driver.find_element(By.XPATH, '//input[@value="App Store Optimization"]')
-    appStoreOptimizationCheckbox.click()
-    appStoreOptimizationCheckbox.is_enabled()
 
+    # Enabling all checkboxes
     for checkbox in serviceCheckboxes:
         checkbox.click()
-        checkbox.is_enabled()
+        checkbox.is_selected()
+
+    if not appStoreOptimizationCheckbox.is_selected():
+        print()
+        print("App Store Optimisation checkbox is out of the main checkboxes array. Enabling manually")
+        print()
+        appStoreOptimizationCheckbox.click()
+        appStoreOptimizationCheckbox.is_selected()
 
     # scroll 600 pixels down (for mobile version)
     if driver.get_window_size().get("height") <= 640:
@@ -115,11 +119,16 @@ def findAndClickCheckboxes():
 
     # We clicked all checkboxes on the page and checked are they enabled
     mobileGrowthStoriesNewsletterCheckbox.click()
-    mobileGrowthStoriesNewsletterCheckbox.is_enabled()
-    checkHereCheckbox.click()
-    checkHereCheckbox.is_enabled()
+    if not mobileGrowthStoriesNewsletterCheckbox.is_selected():
+        mobileGrowthStoriesNewsletterCheckbox.click()
+
+    privacyPolicyCheckbox.click()
+    if not privacyPolicyCheckbox.is_selected():
+        privacyPolicyCheckbox.click()
+
     asoMonthlyNewslettersCheckbox.click()
-    asoMonthlyNewslettersCheckbox.is_enabled()
+    if not asoMonthlyNewslettersCheckbox.is_selected():
+        asoMonthlyNewslettersCheckbox.click()
 
 
 def fillOutDescriptionTestArea():
@@ -135,28 +144,30 @@ def fillOutDescriptionTestArea():
     # Click the button "Lets connect" to send contact form message
     letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
     time.sleep(4)
-    letsConnectButton.click()
-    time.sleep(8)
-    # WebDriverWait(driver, 10)\
-    #     .until(EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "successfully")]')))
-    # if not driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed():
-    #     print("Button was not clicked. Rerun this test again.")
-    #     driver.close()
-    #
-    # # If we got an error, we terminate the script and close the driver
-    # if driver.find_elements(By.XPATH, '//div[contains(text(), "Failed")]'):
-    #     print("Failed to send your message. Please try later or contact the administrator by another method.")
-    #     print("It happens because of we are using selenium and recaptcha security system always can detect it.")
-    #     print("That's why we have to use random user-agent generator.")
-    #     send_negative_message_to_slack_channel(
-    #         "https://hooks.slack.com/services/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",
-    #         "Failed to send your message. Please try later or contact the administrator by another method.",
-    #         "Testing website contact form\n",
-    #         "Automated Phiture website contact form test failed"
-    #         "#c70404",
-    #     )
-    #     driver.close()
-    #     quit()
+
+    # Trying to send contact form from website
+    element = False
+    failedElement = False
+    for i in range(0, 10):
+        time.sleep(1)
+        try:
+            letsConnectButton.click()
+            time.sleep(1.5)
+            element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
+            failedElement = driver.find_element(By.XPATH, '//div[contains(text(), "failed")]').is_displayed()
+            if element:
+                print("Button works correctly")
+                break
+            elif failedElement:
+                print("Failed to send your message. Trying to send contact form until we have a positive message")
+        except NoSuchElementException:
+            print(f"Try number {i+1}. Send button is not working")
+
+    if not element and not failedElement:
+        print()
+        print("Test failed because send button does not work after 10 tries")
+        driver.close()
+        quit()
 
     # Waiting some time because messages arrive late
     time.sleep(2)
@@ -172,9 +183,10 @@ def main():
         with open("credentials.json", "w") as f:
             f.write(os.environ["GMAIL_CREDS"])
     else:
+        print()
         print("GMAIL_CREDS is not set", creds)
         print(os.environ)
-       
+
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -223,14 +235,14 @@ def main():
 
         # Function to print and then change message status from UNREAD to READ after each test
         for message in messages:
-            msg = service.users().messages().get(userId='me', id=message['id'])\
+            msg = service.users().messages().get(userId='me', id=message['id']) \
                 .execute()
             print("Message full description: ", end=' ')
             fullDesc = msg.get("snippet")
             print(fullDesc)
             # For every received email we send a message to a slack channel "phiture-site-automated-tests"
             send_positive_message_to_slack_channel(
-                "https://hooks.slack.com/services/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",
+                "https://hooks.slack.com/services/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",
                 f"You have new autogenerated message: \n{fullDesc}",
                 "Testing website contact form",
                 "#73fc03",
