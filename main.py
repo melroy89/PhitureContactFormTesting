@@ -47,7 +47,7 @@ driver = webdriver.Chrome(options=chromeOpt)
 def setUpBrowserAndAllowCookies():
     # Check if we use mobile version or not
     if driver.get_window_size().get("height") != 640:
-        driver.maximize_window()
+        driver.set_window_size(1920, 1080)
 
     # Go to phiture.com website
     driver.get("https://phiture.com/work-together/")
