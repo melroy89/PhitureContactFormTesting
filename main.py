@@ -151,10 +151,6 @@ def fillOutDescriptionTestArea():
     else:
         driver.execute_script("window.scrollBy(0,400)")
 
-    # Click the button "Lets connect" to send contact form message
-    letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
-    time.sleep(4)
-
 
 def sendContactForm():
     # Trying to send contact form from website
@@ -164,6 +160,7 @@ def sendContactForm():
     for i in range(0, 10):
         time.sleep(1)
         try:
+            letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
             letsConnectButton.click()
             time.sleep(1.5)
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
@@ -200,10 +197,12 @@ def sendContactForm():
 
     # Waiting some time because messages arrive late
     time.sleep(2)
+    print("Preblock is finished")
 
 
 # Getting messages from email using GMAIL API
 def main():
+    print("Final block is running")
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
     """
