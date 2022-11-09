@@ -1,11 +1,13 @@
 from __future__ import print_function
+
+import selenium.webdriver.chrome.options
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from fake_useragent import UserAgent
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -25,20 +27,24 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-opt = Options()
+chromeOpt = selenium.webdriver.chrome.options.Options()
+firefoxOpt = selenium.webdriver.firefox.options.Options()
 ua = UserAgent()
 userAgent = ua.random
 print()
 print("useragent: " + userAgent)
-opt.add_argument("--no-sandbox")
-opt.add_argument("--disable-dev-shm-usage")
-opt.add_argument(f'user-agent={userAgent}')
-driver = webdriver.Chrome(options=opt)
-# driver = webdriver.Firefox(options=opt)
+chromeOpt.add_argument("--no-sandbox")
+chromeOpt.add_argument("--disable-dev-shm-usage")
+chromeOpt.add_argument(f'user-agent={userAgent}')
+firefoxOpt.add_argument("--no-sandbox")
+firefoxOpt.add_argument("--disable-dev-shm-usage")
+firefoxOpt.add_argument(f'user-agent={userAgent}')
+driver = webdriver.Chrome(options=chromeOpt)
+# driver = webdriver.Firefox(options=firefoxOpt)
 # driver.set_window_size(380, 640)
 
 
-def findAndFillOutAllTextFields():
+def setUpBrowserAndAllowCookies():
     # Check if we use mobile version or not
     if driver.get_window_size().get("height") != 640:
         driver.maximize_window()
@@ -61,6 +67,8 @@ def findAndFillOutAllTextFields():
     # Refresh is required because after accepting all cookies webdriver can not see main page correctly
     driver.refresh()
 
+
+def findAndFillOutAllTextFields():
     # We found all parameters on the page
     firstName = driver.find_element(By.NAME, "your-firstname")
     lastName = driver.find_element(By.NAME, "your-lastname")
@@ -116,6 +124,8 @@ def findAndClickCheckboxes():
     # scroll 600 pixels down (for mobile version)
     if driver.get_window_size().get("height") <= 640:
         driver.execute_script("window.scrollBy(0,600)")
+    else:
+        driver.execute_script("window.scrollBy(0,580)")
 
     # We clicked all checkboxes on the page and checked are they enabled
     mobileGrowthStoriesNewsletterCheckbox.click()
@@ -145,27 +155,46 @@ def fillOutDescriptionTestArea():
     letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
     time.sleep(4)
 
+
+def sendContactForm():
     # Trying to send contact form from website
     element = False
     failedElement = False
+    validationElement = False
     for i in range(0, 10):
         time.sleep(1)
         try:
             letsConnectButton.click()
             time.sleep(1.5)
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
-            failedElement = driver.find_element(By.XPATH, '//div[contains(text(), "failed")]').is_displayed()
-            if element:
-                print("Button works correctly")
-                break
-            elif failedElement:
-                print("Failed to send your message. Trying to send contact form until we have a positive message")
+            print("Button works correctly")
+            break
         except NoSuchElementException:
-            print(f"Try number {i+1}. Send button is not working")
+            try:
+                failedElement = driver.find_element(By.XPATH, '//div[contains(text(), "failed")]').is_displayed()
+                print("Failed to send your message. Trying to send contact form until we have a positive message")
+            except NoSuchElementException:
+                try:
+                    validationElement = driver.\
+                        find_element(By.XPATH, '//div[contains(text(), "Validation")]').is_displayed()
+                    print("Validation errors occured. We will fill out all field, checkboxes and try again")
+                    findAndFillOutAllTextFields()
+                    findAndClickCheckboxes()
+                    fillOutDescriptionTestArea()
+                except NoSuchElementException:
+                    print(f"Try number {i + 1}. 'Send' button is not working")
 
-    if not element and not failedElement:
+    if not element and not failedElement and not validationElement:
         print()
         print("Test failed because send button does not work after 10 tries")
+        send_negative_message_to_slack_channel(
+                    "https://hooks.slack.com/services/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",
+                    "Automated Phiture website contact form test failed:\n"
+                    "Please try later or contact the administrator by another method.\n"
+                    "Test failed because send button does not work after 10 tries or because we have an error.\n",
+                    "Testing website contact form\n",
+                    "#FF0000",
+                )
         driver.close()
         quit()
 
@@ -242,7 +271,7 @@ def main():
             print(fullDesc)
             # For every received email we send a message to a slack channel "phiture-site-automated-tests"
             send_positive_message_to_slack_channel(
-                "https://hooks.slack.com/services/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",
+                "https://hooks.slack.com/services/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",
                 f"You have new autogenerated message: \n{fullDesc}",
                 "Testing website contact form",
                 "#73fc03",
@@ -266,9 +295,11 @@ def main():
 # Calling all methods
 if __name__ == '__main__':
     try:
+        setUpBrowserAndAllowCookies()
         findAndFillOutAllTextFields()
         findAndClickCheckboxes()
         fillOutDescriptionTestArea()
+        sendContactForm()
         main()
     except Exception as e:
         print(str(e))
