@@ -126,7 +126,7 @@ def findAndClickCheckboxes():
     if driver.get_window_size().get("height") <= 640:
         driver.execute_script("window.scrollBy(0,600)")
     else:
-        driver.execute_script("window.scrollBy(0,650)")
+        driver.execute_script("window.scrollBy(0,680)")
     time.sleep(1)
 
     # We clicked all checkboxes on the page and checked are they enabled
