@@ -27,7 +27,7 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-webhook = os.environ['WEB_HOOK']
+webhook = os.environ['WEBHOOK']
 chromeOpt = selenium.webdriver.chrome.options.Options()
 firefoxOpt = selenium.webdriver.firefox.options.Options()
 ua = UserAgent()
