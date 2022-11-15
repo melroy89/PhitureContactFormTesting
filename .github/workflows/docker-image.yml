@@ -30,6 +30,5 @@ jobs:
         WEB_HOOK: ${{ secrets.WEB_HOOK }}
       with:
         image: phiture/phiture_site_tests:latest
-        run: |
-          echo ${{ secrets.WEB_HOOK }}
-          python3 main.py |
+        run: echo ${{ secrets.WEB_HOOK }}
+
