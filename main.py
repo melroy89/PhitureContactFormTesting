@@ -27,7 +27,7 @@ disp.start()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
-webhook1 = "https:
+webhook1 = "https:"
 webhook2 = "//hooks"
 webhook3 = ".slack"
 webhook4 = ".com/"
