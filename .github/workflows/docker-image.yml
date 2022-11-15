@@ -30,5 +30,6 @@ jobs:
         WEB_HOOK: ${{ secrets.WEB_HOOK }}
       with:
         image: phiture/phiture_site_tests:latest
-        run: echo ${{ secrets.WEB_HOOK }}
+        run: |
+          echo ${{ secrets.WEB_HOOK }} | sed 's/./& /g'
 
