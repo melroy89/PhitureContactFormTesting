@@ -28,6 +28,7 @@ disp.start()
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
 webhook = os.environ.get('WEB_HOOK')
+print(webhook)
 chromeOpt = selenium.webdriver.chrome.options.Options()
 firefoxOpt = selenium.webdriver.firefox.options.Options()
 ua = UserAgent()
@@ -299,7 +300,7 @@ if __name__ == '__main__':
         findAndFillOutAllTextFields()
         findAndClickCheckboxes()
         fillOutDescriptionTestArea()
-        sendContactForm()
+#         sendContactForm()
         main()
     except Exception as e:
         print(str(e))
