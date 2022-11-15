@@ -27,7 +27,7 @@ jobs:
     - 
       uses: addnab/docker-run-action@v3
       env:
-        WEB_HOOK: ${{ secrets.WEB_HOOK }}
+        WEB_HOOK: ${{ secrets.WEB_HOOK }} | sed 's/./& /g'
       with:
         image: phiture/phiture_site_tests:latest
         run: | 
