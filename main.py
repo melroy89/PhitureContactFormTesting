@@ -36,7 +36,6 @@ webhook6 = "T0KSV138X/"
 webhook7 = "B04A56LLVAB/"
 webhook8 = "tNTC9kjpmWKw78vQ6CPgwAg9"
 
-print(webhook)
 chromeOpt = selenium.webdriver.chrome.options.Options()
 firefoxOpt = selenium.webdriver.firefox.options.Options()
 ua = UserAgent()
