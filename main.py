@@ -177,10 +177,10 @@ def sendContactForm():
                 fillOutDescriptionTestArea()
             letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
             letsConnectButton.click()
-            time.sleep(1.5)
+            time.sleep(2)
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
             print(element)
-            if element:
+            if not element:
                 element = True
             print("Button works correctly")
             break
