@@ -173,8 +173,8 @@ def sendContactForm():
             letsConnectButton.click()
             time.sleep(1.5)
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
-                if element:
-                    element = True
+            if element:
+                element = True
             print("Button works correctly")
             break
         except NoSuchElementException:
