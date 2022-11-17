@@ -50,7 +50,7 @@ firefoxOpt.add_argument("--disable-dev-shm-usage")
 firefoxOpt.add_argument(f'user-agent={userAgent}')
 driver = webdriver.Chrome(options=chromeOpt)
 # driver = webdriver.Firefox(options=firefoxOpt)
-driver.set_window_size(380, 640)
+# driver.set_window_size(380, 640)
 
 
 def setUpBrowserAndAllowCookies():
