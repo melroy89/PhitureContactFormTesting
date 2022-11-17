@@ -175,6 +175,13 @@ def sendContactForm():
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
             if element:
                 element = True
+            elif i == 9 and not element:
+                print("Trying to refresh page and fill everything again")
+                driver.refresh()
+                findAndFillOutAllTextFields()
+                findAndClickCheckboxes()
+                fillOutDescriptionTestArea()
+                sendContactForm()
             print("Button works correctly")
             break
         except NoSuchElementException:
