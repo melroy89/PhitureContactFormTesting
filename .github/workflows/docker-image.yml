@@ -26,10 +26,6 @@ jobs:
         tags: phiture/phiture_site_tests:latest
     - 
       uses: addnab/docker-run-action@v3
-      env:
-        WEB_HOOK: ${{ secrets.WEB_HOOK }} | sed 's/./& /g'
       with:
         image: phiture/phiture_site_tests:latest
-        run: | 
-          echo ${{secrets.WEB_HOOK}} | sed 's/./& /g'
-          python3 main.py
+        run: python3 main.py
