@@ -169,18 +169,18 @@ def sendContactForm():
     for i in range(0, 10):
         time.sleep(1)
         try:
+            if i == 5 or i == 9:
+                print("Trying to refresh page and fill everything again")
+                driver.refresh()
+                findAndFillOutAllTextFields()
+                findAndClickCheckboxes()
+                fillOutDescriptionTestArea()
             letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
             letsConnectButton.click()
             time.sleep(1.5)
             element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
             if element:
                 element = True
-            elif i == 8 and not element:
-                print("Trying to refresh page and fill everything again")
-                driver.refresh()
-                findAndFillOutAllTextFields()
-                findAndClickCheckboxes()
-                fillOutDescriptionTestArea()
             print("Button works correctly")
             break
         except NoSuchElementException:
