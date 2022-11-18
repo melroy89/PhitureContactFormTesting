@@ -198,6 +198,7 @@ def sendContactForm():
                     fillOutDescriptionTestArea()
                 except NoSuchElementException:
                     print(f"Try number {i + 1}. 'Send' button is not working")    
+                    driver.save_screenshot(f"button_not_working_{i}.png")
     time.sleep(2)
     print(element, failedElement, validationElement)
     if not element and not failedElement and not validationElement:
