@@ -200,8 +200,8 @@ def sendContactForm():
                     print(f"Try number {i + 1}. 'Send' button is not working")    
                     driver.save_screenshot(f"button_not_working_{i}.png")
     time.sleep(2)
-    print("Success message: " + str(element), "failed message: " + str(failedElement), "and validation error: " +
-          str(validationElement))
+    print("Success message status: " + str(element), "\n failed message status: " + str(failedElement), 
+          "\n and validation error status: " + str(validationElement))
     if not element and not failedElement and not validationElement:
         print()
         print("Test failed because send button does not work after 10 tries")
