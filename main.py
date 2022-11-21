@@ -162,12 +162,16 @@ def fillOutDescriptionTestArea():
 
 
 def sendContactForm():
-    # Trying to send contact form from website
+    #Trying to send contact form from website
+    #We use a stack of try-catch blocks,
+    #because we have 3 types of possible messages below 'send' button:
+    #Success, failed and validation occured
+    #And one error with google security policy,
+    #which you can see inside devtools in browser   
     element = False
     failedElement = False
     validationElement = False
     for i in range(0, 10):
-        time.sleep(3)
         try:
             if i == 5 or i == 9:
                 print("Trying to refresh page and fill everything again")
@@ -199,9 +203,11 @@ def sendContactForm():
                 except NoSuchElementException:
                     print(f"Try number {i + 1}. 'Send' button is not working")    
                     driver.save_screenshot(f"button_not_working_{i}.png")
-    time.sleep(2)
-    print("Success message status: " + str(element), "\n failed message status: " + str(failedElement), 
-          "\n and validation error status: " + str(validationElement))
+        time.sleep(3)
+    
+    print("Success message status: " + str(element), "\nFailed message status: " + str(failedElement), 
+          "\nValidation error status: " + str(validationElement))
+    
     if not element and not failedElement and not validationElement:
         print()
         print("Test failed because send button does not work after 10 tries")
@@ -217,8 +223,8 @@ def sendContactForm():
         quit()
 
     # Waiting some time because messages arrive late
-    time.sleep(2)
     print("Preblock is finished (WEB)")
+    time.sleep(2)
 
 
 # Getting messages from email using GMAIL API
