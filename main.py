@@ -167,7 +167,7 @@ def sendContactForm():
     failedElement = False
     validationElement = False
     for i in range(0, 10):
-        time.sleep(1)
+        time.sleep(3)
         try:
             if i == 5 or i == 9:
                 print("Trying to refresh page and fill everything again")
@@ -200,7 +200,8 @@ def sendContactForm():
                     print(f"Try number {i + 1}. 'Send' button is not working")    
                     driver.save_screenshot(f"button_not_working_{i}.png")
     time.sleep(2)
-    print(element, failedElement, validationElement)
+    print("Success message: " + str(element), "failed message: " + str(failedElement), "and validation error: " +
+          str(validationElement))
     if not element and not failedElement and not validationElement:
         print()
         print("Test failed because send button does not work after 10 tries")
@@ -217,12 +218,12 @@ def sendContactForm():
 
     # Waiting some time because messages arrive late
     time.sleep(2)
-    print("Preblock is finished")
+    print("Preblock is finished (WEB)")
 
 
 # Getting messages from email using GMAIL API
 def main():
-    print("Final block is running")
+    print("Final block is running (Backend)")
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
     """
