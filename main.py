@@ -181,9 +181,13 @@ def sendContactForm():
                 fillOutDescriptionTestArea()
             letsConnectButton = driver.find_element(By.XPATH, '//input[@value="Let\'s connect"]')
             letsConnectButton.click()
-            time.sleep(2)
-            element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
-            print(element)
+            if i == 0:
+                time.sleep(6)
+                element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
+            else:
+                time.sleep(3)
+                element = driver.find_element(By.XPATH, '//div[contains(text(), "successfully")]').is_displayed()
+                print(element)
             if not element:
                 element = True
             print("Button works correctly")
@@ -196,7 +200,7 @@ def sendContactForm():
                 try:
                     validationElement = driver.\
                         find_element(By.XPATH, '//div[contains(text(), "Validation")]').is_displayed()
-                    print("Validation errors occured. We will fill out all field, checkboxes and try again")
+                    print("Validation errors occurred. We will fill out all field, checkboxes and try again")
                     findAndFillOutAllTextFields()
                     findAndClickCheckboxes()
                     fillOutDescriptionTestArea()
