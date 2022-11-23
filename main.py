@@ -38,16 +38,16 @@ webhook8 = "tNTC9kjpmWKw78vQ6CPgwAg9"
 
 chromeOpt = selenium.webdriver.chrome.options.Options()
 firefoxOpt = selenium.webdriver.firefox.options.Options()
-ua = UserAgent()
-userAgent = ua.random
+# ua = UserAgent()
+# userAgent = ua.random
 print()
-print("useragent: " + userAgent)
+# print("useragent: " + userAgent)
 chromeOpt.add_argument("--no-sandbox")
 chromeOpt.add_argument("--disable-dev-shm-usage")
 # chromeOpt.add_argument(f'user-agent={userAgent}')
 firefoxOpt.add_argument("--no-sandbox")
 firefoxOpt.add_argument("--disable-dev-shm-usage")
-firefoxOpt.add_argument(f'user-agent={userAgent}')
+# firefoxOpt.add_argument(f'user-agent={userAgent}')
 driver = webdriver.Chrome(options=chromeOpt)
 # driver = webdriver.Firefox(options=firefoxOpt)
 # driver.set_window_size(380, 640)
@@ -219,7 +219,7 @@ def sendContactForm():
                     "Testing website contact form\n",
                     "#FF0000",
                 )
-        driver.close()
+        driver.quit()
         quit()
 
     # Waiting some time because messages arrive late
@@ -314,7 +314,7 @@ def main():
 
     # We need to male a screenshot and close the browser
     driver.save_screenshot("screenshot.png")
-    driver.close()
+    driver.quit()
     disp.stop()
 
 
