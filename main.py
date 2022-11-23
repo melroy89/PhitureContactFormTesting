@@ -36,8 +36,8 @@ webhook6 = "T0KSV138X/"
 webhook7 = "B04A56LLVAB/"
 webhook8 = "tNTC9kjpmWKw78vQ6CPgwAg9"
 
-# chromeOpt = selenium.webdriver.chrome.options.Options()
-# firefoxOpt = selenium.webdriver.firefox.options.Options()
+chromeOpt = selenium.webdriver.chrome.options.Options()
+firefoxOpt = selenium.webdriver.firefox.options.Options()
 # ua = UserAgent()
 # userAgent = ua.random
 # print()
@@ -49,7 +49,7 @@ webhook8 = "tNTC9kjpmWKw78vQ6CPgwAg9"
 # firefoxOpt.add_argument("--disable-dev-shm-usage")
 # firefoxOpt.add_argument(f'user-agent={userAgent}')
 # driver = webdriver.Chrome(options=chromeOpt)
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=chromeOpt)
 # driver = webdriver.Firefox(options=firefoxOpt)
 # driver.set_window_size(380, 640)
 
