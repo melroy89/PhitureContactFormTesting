@@ -2,7 +2,7 @@ name: Docker Image Build and Run CI
 on:
   # run twice per day
   schedule:
-    - cron: "1 0,12 * * *"
+    - cron: "1 0,12 * * 1"
   push:
     branches: [ "master" ]
   pull_request:
